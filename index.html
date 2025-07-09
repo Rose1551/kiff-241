@@ -1,0 +1,335 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Kiff 241</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        @keyframes float {
+            0% { transform: translateY(0px); }
+            50% { transform: translateY(-10px); }
+            100% { transform: translateY(0px); }
+        }
+        
+        .floating {
+            animation: float 3s ease-in-out infinite;
+        }
+        
+        .confetti {
+            position: absolute;
+            width: 10px;
+            height: 10px;
+            background-color: #f00;
+            opacity: 0;
+        }
+        
+        .video-container {
+            position: relative;
+            overflow: hidden;
+            border-radius: 1rem;
+            box-shadow: 0 10px 25px rgba(0, 100, 0, 0.2);
+        }
+        
+        .video-overlay {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(rgba(0, 100, 0, 0.3), rgba(0, 80, 0, 0.5));
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            color: white;
+            text-align: center;
+            padding: 2rem;
+        }
+        
+        .user-photo {
+            border: 4px solid white;
+            box-shadow: 
+            0 0 50px rgb(3, 63, 1),
+            0 0 60px rgb(57, 214, 18),
+            0 0 30px rgb(127, 231, 123);
+        }
+        h1 {
+          font-family: Berlin Sans FB;
+        }
+        p{
+            font-family: Century Gothic;
+        }
+        div{
+            font-family:Ink Free;
+        }
+    </style>
+</head>
+<body class="bg-green-50 min-h-screen">
+    <div class="container mx-auto px-4 py-8">
+        <!-- Header -->
+        <header class="text-center mb-12">
+            <h1 class="text-4xl md:text-5xl font-bold text-green-800 mb-4">
+                <i class="fas fa-graduation-cap text-yellow-500 mr-2"></i>
+                Kiff 241
+            </h1>
+            <p class="text-lg text-green-600 max-w-2xl mx-auto">
+                Little surprise for the new graduates ^^
+            </p>
+        </header>
+        
+        <!-- Main Content -->
+        <div class="flex flex-col lg:flex-row gap-8 items-center justify-center">
+            <!-- Form Section -->
+            <div class="w-full lg:w-1/2 bg-white rounded-xl shadow-lg p-6 hover:shadow-xl transition-shadow duration-300">
+                <h2 class="text-2xl font-semibold text-green-700 mb-6">
+                    <i class="fas fa-user-edit text-green-500 mr-2"></i>
+                    You!
+                </h2>
+                
+                <form id="userForm" class="space-y-6">
+                    <div>
+                        <label for="name" class="block text-sm font-medium text-green-700 mb-1">
+                            YOUR FIRSTNAME
+                        </label>
+                        <div class="relative">
+                            <div class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
+                                <i class="fas fa-user text-green-400"></i>
+                            </div>
+                            <input type="text" id="name" 
+                                   class="pl-10 block w-full rounded-lg border-green-200 focus:border-green-500 focus:ring-green-500" 
+                                   placeholder="Ex: Jean" required>
+                        </div>
+                    </div>
+                    
+                    <div>
+                        <label for="photo" class="block text-sm font-medium text-green-700 mb-1">
+                            YOUR PICTURE
+                        </label>
+                        <div class="flex items-center justify-center w-full">
+                            <label for="photo" class="flex flex-col items-center justify-center w-full h-48 border-2 border-green-300 border-dashed rounded-lg cursor-pointer bg-green-50 hover:bg-green-100 transition-colors duration-200">
+                                <div class="flex flex-col items-center justify-center pt-5 pb-6">
+                                    <i class="fas fa-camera text-3xl text-green-400 mb-2"></i>
+                                    <p class="mb-2 text-sm text-green-500">
+                                        <span class="font-semibold">click for uploader (post a nice photo)</span> or drag and drop
+                                    </p>
+                                    <p class="text-xs text-green-400">PNG, JPG (max. 2MB)</p>
+                                </div>
+                                <input id="photo" type="file" class="hidden" accept="image/*" required>
+                            </label>
+                        </div>
+                    </div>
+                    
+                    <div class="pt-4">
+                        <button type="submit" 
+                                class="w-full bg-gradient-to-r from-green-500 to-green-600 hover:from-green-600 hover:to-green-700 text-white font-bold py-3 px-4 rounded-lg shadow-md hover:shadow-lg transition-all duration-300 flex items-center justify-center">
+                            <i class="fas fa-video mr-2"></i>
+                            Click here for our surprise
+                        </button>
+                    </div>
+                </form>
+            </div>
+            
+            <!-- Preview Section -->
+            <div class="w-full lg:w-1/2">
+                <div id="previewContainer" class="hidden">
+                    <h2 class="text-2xl font-semibold text-green-700 mb-6 text-center">
+                        <i class="fas fa-play-circle text-green-500 mr-2"></i>
+                        CONGRATULATION WINNER
+                    </h2>
+                    
+                    <div class="video-container bg-green-800 aspect-video max-w-full">
+                        <div id="videoPreview" class="w-full h-full bg-green-900 flex items-center justify-center">
+                            <div class="video-overlay">
+                                <div id="userPhotoContainer" class="w-24 h-24 md:w-32 md:h-32 rounded-full overflow-hidden mb-6 user-photo">
+                                    <!-- User photo will be inserted here -->
+                                </div>
+                                <h3 id="userNameDisplay" class="text-2xl md:text-3xl font-bold mb-2"></h3>
+                                <p class="text-lg md:text-xl mb-4">Congratulations for our</p>
+                                <div class="bg-yellow-500 text-green-900 font-bold px-4 py-2 rounded-lg text-xl md:text-2xl floating">
+                                    BAC 2k25
+                                </div>
+                                <p class="mt-6 text-sm md:text-base">Everyone is proud of you!</p>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="mt-6 flex justify-center">
+                        <button id="downloadBtn" 
+                                class="bg-green-600 hover:bg-green-700 text-white font-bold py-2 px-6 rounded-lg flex items-center">
+                            <i class="fas fa-download mr-2"></i>
+                            This animation is just a visual surprise, you can't download
+                        </button>
+                    </div>
+                </div>
+                
+                <div id="placeholder" class="bg-white rounded-xl shadow-lg p-8 text-center">
+                    <div class="text-green-400 mb-4">
+                        <i class="fas fa-graduation-cap text-6xl"></i>
+                    </div>
+                    <h3 class="text-xl font-semibold text-green-700 mb-2">
+                        Ta vidéo apparaîtra ici
+                    </h3>
+                    <p class="text-green-500">
+                        Fill out the form to generate surprise
+                    </p>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Footer -->
+        <footer class="mt-16 text-center text-green-600 text-sm">
+            <p>© 2025 Bac - All rights reserved - 076 41 60 94</p>
+            <p class="mt-1">Created with <i class="fas fa-heart text-red-400"></i> for high school graduates by Rose1551</p>
+            <p>Only green - It is finally our rise toward happiness</p>
+            <br>
+            <br>
+            <P><i>Photos are not stored or sent, they remain in your browser only.</i></P>
+        </footer>
+    </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const form = document.getElementById('userForm');
+            const previewContainer = document.getElementById('previewContainer');
+            const placeholder = document.getElementById('placeholder');
+            const userNameDisplay = document.getElementById('userNameDisplay');
+            const userPhotoContainer = document.getElementById('userPhotoContainer');
+            const downloadBtn = document.getElementById('downloadBtn');
+            const videoPreview = document.getElementById('videoPreview');
+            
+            let userName = '';
+            let userPhotoUrl = '';
+            
+            // Handle form submission
+            form.addEventListener('submit', function(e) {
+                e.preventDefault();
+                
+                // Get user name
+                userName = document.getElementById('name').value.trim();
+                
+                // Get photo file
+                const photoFile = document.getElementById('photo').files[0];
+                
+                if (!userName || !photoFile) {
+                    alert('Please fill in all fields');
+                    return;
+                }
+                
+                // Create photo URL
+                userPhotoUrl = URL.createObjectURL(photoFile);
+                
+                // Update preview
+                userNameDisplay.textContent = userName;
+                
+                // Clear previous photo if any
+                while (userPhotoContainer.firstChild) {
+                    userPhotoContainer.removeChild(userPhotoContainer.firstChild);
+                }
+                
+                // Add new photo
+                const img = document.createElement('img');
+                img.src = userPhotoUrl;
+                img.alt = userName;
+                img.className = 'w-full h-full object-cover';
+                userPhotoContainer.appendChild(img);
+                
+                // Show preview and hide placeholder
+                placeholder.classList.add('hidden');
+                previewContainer.classList.remove('hidden');
+                
+                // Create confetti effect
+                createConfetti();
+            });
+            
+            // Handle download button
+            downloadBtn.addEventListener('click', function() {
+                if (!userName || !userPhotoUrl) {
+                    alert('Please generate surprise first');
+                    return;
+                }
+                
+                // In a real app, this would generate and download an actual video
+                // Here we'll just simulate it with an alert
+                alert(`Surprise for${userName} currently downloading!\n\nIn a real application, this feature would generate an MP4 video with your name and photo.`);
+            });
+            
+            // Create confetti effect
+            function createConfetti() {
+                const colors = ['#f00', '#0f0', '#00f', '#ff0', '#f0f', '#0ff'];
+                
+                for (let i = 0; i < 100; i++) {
+                    const confetti = document.createElement('div');
+                    confetti.className = 'confetti';
+                    confetti.style.backgroundColor = colors[Math.floor(Math.random() * colors.length)];
+                    confetti.style.left = Math.random() * 100 + '%';
+                    confetti.style.top = -10 + 'px';
+                    confetti.style.transform = `rotate(${Math.random() * 360}deg)`;
+                    
+                    videoPreview.appendChild(confetti);
+                    
+                    // Animate confetti
+                    setTimeout(() => {
+                        confetti.style.opacity = '1';
+                        confetti.style.transition = `all ${5 + Math.random() * 5}s ease-out`;
+                        confetti.style.top = '100%';
+                        confetti.style.left = Math.random() * 100 + '%';
+                    }, i * 50);
+                    
+                    // Remove confetti after animation
+                    setTimeout(() => {
+                        confetti.remove();
+                    }, 5000 + i * 50);
+                }
+            }
+            
+            // Drag and drop for photo upload
+            const dropArea = document.querySelector('label[for="photo"]');
+            const fileInput = document.getElementById('photo');
+            
+            ['dragenter', 'dragover', 'dragleave', 'drop'].forEach(eventName => {
+                dropArea.addEventListener(eventName, preventDefaults, false);
+            });
+            
+            function preventDefaults(e) {
+                e.preventDefault();
+                e.stopPropagation();
+            }
+            
+            ['dragenter', 'dragover'].forEach(eventName => {
+                dropArea.addEventListener(eventName, highlight, false);
+            });
+            
+            ['dragleave', 'drop'].forEach(eventName => {
+                dropArea.addEventListener(eventName, unhighlight, false);
+            });
+            
+            function highlight() {
+                dropArea.classList.add('bg-green-200', 'border-green-500');
+            }
+            
+            function unhighlight() {
+                dropArea.classList.remove('bg-green-200', 'border-green-500');
+            }
+            
+            dropArea.addEventListener('drop', handleDrop, false);
+            
+            function handleDrop(e) {
+                const dt = e.dataTransfer;
+                const files = dt.files;
+                
+                if (files.length) {
+                    fileInput.files = files;
+                    
+                    // Update UI to show file name
+                    const fileName = files[0].name;
+                    const infoText = dropArea.querySelector('p:first-of-type');
+                    infoText.innerHTML = `<span class="font-semibold">Fichier sélectionné:</span> ${fileName}`;
+                }
+            }
+        });
+    </script>
+</body>
+</html>
+</html>
