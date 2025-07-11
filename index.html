@@ -13,15 +13,18 @@
             50% { transform: translateY(-10px); }
             100% { transform: translateY(0px); }
         }
+        body{
+            background-color: rgb(247, 255, 245);
+        }
         
         .floating {
-            animation: float 3s ease-in-out infinite;
+            animation: float 4s ease-in-out infinite;
         }
         
         .confetti {
             position: absolute;
-            width: 10px;
-            height: 10px;
+            width: 15px;
+            height: 15px;
             background-color: #f00;
             opacity: 0;
         }
@@ -39,12 +42,12 @@
             left: 0;
             width: 100%;
             height: 100%;
-            background: linear-gradient(rgba(0, 100, 0, 0.3), rgba(0, 80, 0, 0.5));
+            background: linear-gradient(to left, rgba(0, 100, 0, 0.3), rgba(44, 247, 44, 0.5));
             display: flex;
             flex-direction: column;
             justify-content: center;
             align-items: center;
-            color: white;
+            color: #ffffff;
             text-align: center;
             padding: 2rem;
         }
@@ -52,12 +55,18 @@
         .user-photo {
             border: 4px solid white;
             box-shadow: 
-            0 0 50px rgb(3, 63, 1),
-            0 0 60px rgb(57, 214, 18),
-            0 0 30px rgb(127, 231, 123);
+            0 0 40px rgb(36, 248, 29),
+            0 0 30px rgb(125, 218, 63),
+            0 0 30px rgb(243, 255, 242);
         }
         h1 {
-          font-family: Berlin Sans FB;
+          color: white;  
+           font-family: Berlin Sans FB;
+           text-shadow: 
+            0 0 3px rgb(36, 248, 29),
+            0 0 20px rgb(208, 218, 63),
+            0 0 10px rgb(0, 22, 223);
+            
         }
         p{
             font-family: Century Gothic;
@@ -65,17 +74,22 @@
         div{
             font-family:Ink Free;
         }
+        img{
+            width: 200px;
+            height: 200px;
+        }
+       
+       
     </style>
 </head>
-<body class="bg-green-50 min-h-screen">
+<body class="min-h-screen">
     <div class="container mx-auto px-4 py-8">
         <!-- Header -->
         <header class="text-center mb-12">
-            <h1 class="text-4xl md:text-5xl font-bold text-green-800 mb-4">
-                <i class="fas fa-graduation-cap text-yellow-500 mr-2"></i>
-                Kiff 241
+            <h1 class="flex items-center justify-center gap-4 text-4xl md:text-5xl font-bold  mb-4">
+                <img src="kiff (1).png">  <p class="light">Kiff 241</p>
             </h1>
-            <p class="text-lg text-green-600 max-w-2xl mx-auto">
+            <p class="text-lg text-green-600 max-w-2xl mx-auto text-center">
                 Little surprise for the new graduates ^^
             </p>
         </header>
@@ -107,6 +121,7 @@
                     <div>
                         <label for="photo" class="block text-sm font-medium text-green-700 mb-1">
                             YOUR PICTURE
+                            
                         </label>
                         <div class="flex items-center justify-center w-full">
                             <label for="photo" class="flex flex-col items-center justify-center w-full h-48 border-2 border-green-300 border-dashed rounded-lg cursor-pointer bg-green-50 hover:bg-green-100 transition-colors duration-200">
@@ -115,6 +130,7 @@
                                     <p class="mb-2 text-sm text-green-500">
                                         <span class="font-semibold">click for uploader (post a nice photo)</span> or drag and drop
                                     </p>
+                                    <p id="photoConfirmation" class="mt-2 text-green-600 text-sm hidden">✅ Photo bien ajoutée !</p>
                                     <p class="text-xs text-green-400">PNG, JPG (max. 2MB)</p>
                                 </div>
                                 <input id="photo" type="file" class="hidden" accept="image/*" required>
@@ -143,7 +159,7 @@
                     <div class="video-container bg-green-800 aspect-video max-w-full">
                         <div id="videoPreview" class="w-full h-full bg-green-900 flex items-center justify-center">
                             <div class="video-overlay">
-                                <div id="userPhotoContainer" class="w-24 h-24 md:w-32 md:h-32 rounded-full overflow-hidden mb-6 user-photo">
+                                <div id="userPhotoContainer" class="w-1/2 h-1/2 md:w-32% md:h-1/2 rounded-full overflow-hidden mb-0 user-photo">
                                     <!-- User photo will be inserted here -->
                                 </div>
                                 <h3 id="userNameDisplay" class="text-2xl md:text-3xl font-bold mb-2"></h3>
@@ -170,7 +186,7 @@
                         <i class="fas fa-graduation-cap text-6xl"></i>
                     </div>
                     <h3 class="text-xl font-semibold text-green-700 mb-2">
-                        Ta vidéo apparaîtra ici
+                        Your surprise behind this
                     </h3>
                     <p class="text-green-500">
                         Fill out the form to generate surprise
@@ -330,6 +346,18 @@
                 }
             }
         });
+        const fileInput = document.getElementById('photo');
+const photoConfirmation = document.getElementById('photoConfirmation');
+
+fileInput.addEventListener('change', function () {
+    const file = this.files[0];
+    if (file) {
+        photoConfirmation.classList.remove('hidden');
+        photoConfirmation.textContent = '✅ Photo bien ajoutée !';
+    } else {
+        photoConfirmation.classList.add('hidden');
+    }
+});
     </script>
 </body>
 </html>
